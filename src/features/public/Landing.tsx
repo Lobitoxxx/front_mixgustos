@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { experienciaInicial } from "../../nav/config";
 import LandingNav from "./LandingNav";
 import Hero from "./Hero";
+import Restaurante from "./Restaurante";
+import BentoSistema from "./BentoSistema";
 import CartaDemo from "./CartaDemo";
-import { Restaurante, Contacto } from "./Secciones";
+import { Contacto } from "./Secciones";
 import CookieBanner from "./CookieBanner";
 import LoginForm from "./LoginForm";
 import RegisterFlow from "./RegisterFlow";
@@ -28,6 +30,7 @@ export default function Landing() {
       <Hero onLogin={() => setOverlay("login")} nav={<LandingNav onLogin={() => setOverlay("login")} />} />
       <Restaurante />
       <CartaDemo />
+      <BentoSistema />
       <Contacto onOpenTerms={() => setOverlay("terms")} />
       <CookieBanner />
 

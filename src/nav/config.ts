@@ -29,6 +29,7 @@ export const NAV: Record<Experiencia, NavEntry[]> = {
     { label: "Finanzas", path: "/admin/finanzas", perm: "finance.view", fase: 3, desc: "Gastos, cuentas por pagar y cuentas por cobrar." },
     { label: "Reportes", path: "/admin/reportes", perm: "reports.view", fase: 3, desc: "Reportes del negocio; financieros si el permiso lo permite." },
     { label: "Notificaciones", path: "/admin/notificaciones", perm: null, fase: 3, desc: "Bandeja, difusión al personal y preferencias." },
+    { label: "Carta demo", path: "/admin/carta-demo", perm: null, fase: 3, desc: "CRUD de platos ficticios que se muestran en la web pública." },
     { label: "Configuración", path: "/admin/configuracion", perm: "settings.manage", fase: 3, desc: "Configuración general del sistema." },
   ],
   op: [

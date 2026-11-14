@@ -28,6 +28,7 @@ const Finanzas = lazy(() => import("./features/admin/Finanzas"));
 const Reportes = lazy(() => import("./features/admin/Reportes"));
 const Notificaciones = lazy(() => import("./features/admin/Notificaciones"));
 const Configuracion = lazy(() => import("./features/admin/Configuracion"));
+const CartaDemoAdmin = lazy(() => import("./features/admin/CartaDemoAdmin"));
 
 function Cargando() {
   return <p className="p-5 text-ink-mut">Cargando módulo…</p>;
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="finanzas" element={pagina(<Finanzas />, "finance.view")} />
           <Route path="reportes" element={pagina(<Reportes />, "reports.view")} />
           <Route path="notificaciones" element={pagina(<Notificaciones />, null)} />
+          <Route path="carta-demo" element={pagina(<CartaDemoAdmin />, null)} />
           <Route path="configuracion" element={pagina(<Configuracion />, "settings.manage")} />
         </Route>
 

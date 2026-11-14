@@ -16,6 +16,8 @@ export default function Hero({ onLogin, nav }: { onLogin: () => void; nav?: Reac
         playsInline
       />
       <div className="absolute inset-0 bg-black/10" />
+      {/* Bottom fade into the page body */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-sand-950 to-transparent" />
 
       {/* Floating nav over the video */}
       {nav && <div className="absolute inset-x-0 top-0 z-30">{nav}</div>}
@@ -25,7 +27,10 @@ export default function Hero({ onLogin, nav }: { onLogin: () => void; nav?: Reac
         <div className="flex-1" style={{ flexGrow: 0.6 }} />
         <div className="flex items-start justify-center px-5">
           <div className="animate-slide-up max-w-3xl text-center">
-            <h1 className="text-3xl leading-[1.05] tracking-[-0.02em] text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
+              Restaurante · Miraflores
+            </p>
+            <h1 className="text-4xl leading-[1.03] tracking-[-0.03em] text-white sm:text-5xl md:text-6xl lg:text-7xl">
               Sabores que
               <br />
               <span className="text-white/60">se recuerdan.</span>{" "}
@@ -54,7 +59,12 @@ export default function Hero({ onLogin, nav }: { onLogin: () => void; nav?: Reac
             </div>
           </div>
         </div>
-        <div className="flex-1" />
+        {/* Scroll hint */}
+        <div className="flex flex-1 items-end justify-center pb-8">
+          <div className="flex h-9 w-5 items-start justify-center rounded-full border border-white/30 p-1.5">
+            <span className="h-2 w-1 animate-bounce rounded-full bg-white/70" />
+          </div>
+        </div>
       </div>
     </section>
   );
