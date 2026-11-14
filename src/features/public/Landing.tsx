@@ -37,11 +37,11 @@ export default function Landing() {
       {/* ── Login overlay ─────────────────────────────────────────────── */}
       {overlay === "login" && (
         <div
-          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           onClick={() => setOverlay(null)}
         >
           <div
-            className="w-full max-w-sm rounded-2xl border border-ink-line bg-ink-800 p-6 shadow-2xl"
+            className="glass-card animate-pop w-full max-w-sm rounded-2xl bg-ink-800/90 p-6 shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -65,11 +65,11 @@ export default function Landing() {
       {/* ── Client register overlay ───────────────────────────────────── */}
       {overlay === "register" && (
         <div
-          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           onClick={() => setOverlay(null)}
         >
           <div
-            className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-ink-line bg-ink-800 p-6 shadow-2xl"
+            className="glass-card animate-pop max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-ink-800/90 p-6 shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-3 flex items-center justify-between">
@@ -84,11 +84,11 @@ export default function Landing() {
       {/* ── Terms overlay ─────────────────────────────────────────────── */}
       {overlay === "terms" && (
         <div
-          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="animate-fade fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           onClick={() => setOverlay(null)}
         >
           <div
-            className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-sand-line bg-sand-900 p-6 shadow-2xl"
+            className="glass-card animate-pop max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-sand-900/90 p-6 shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">

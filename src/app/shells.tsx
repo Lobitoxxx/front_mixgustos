@@ -1,13 +1,14 @@
 //! Adaptive shells: A (administrative, sidebar → drawer on mobile),
 //! B (operative, single task), D (kitchen/dispatch boards, fullscreen).
-//! Navigation is filtered by the session's effective permissions and every
-//! shell is responsive (desktop, laptop, tablet, phone).
+//! Shared warm design language with the public site; navigation filtered by
+//! the session's effective permissions.
 
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
 import { NAV, type Experiencia } from "../nav/config";
+import Logo from "../features/public/Logo";
 
 function useNavEntries(experiencia: Experiencia) {
   const { hasPermission } = useAuth();
@@ -25,19 +26,21 @@ function Header({ experiencia, onMenu, showMenu = true }: { experiencia: Experie
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center gap-2 border-b border-ink-line bg-ink-800 px-3 py-2 sm:gap-3 sm:px-4">
-      {/* Drawer toggle on narrow screens */}
+    <header className="glass-nav flex items-center gap-2 border-b border-white/10 bg-ink-900/60 px-3 py-2.5 sm:gap-3 sm:px-4">
       {showMenu && (
         <button
           onClick={onMenu}
-          className="rounded-md p-2 text-ink-txt hover:bg-ink-700 lg:hidden"
+          className="rounded-lg p-2 text-ink-txt hover:bg-ink-700 lg:hidden"
           aria-label="Abrir menú"
         >
           <Menu size={20} />
         </button>
       )}
-      <span className="whitespace-nowrap font-bold text-brand-500">🍅 MixGustos</span>
-      <span className="hidden rounded-full bg-brand-600 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white sm:inline">
+      <NavLink to="/" className="flex items-center gap-1.5 text-ink-txt" title="Volver a la web del restaurante">
+        <Logo size={22} />
+        <span className="whitespace-nowrap text-sm font-semibold tracking-tight">mixgustos</span>
+      </NavLink>
+      <span className="hidden rounded-full bg-brand-600/90 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white sm:inline">
         {EXPERIENCIA_LABEL[experiencia]}
       </span>
       <div className="flex-1" />
@@ -50,18 +53,33 @@ function Header({ experiencia, onMenu, showMenu = true }: { experiencia: Experie
           await logout();
           navigate("/login", { replace: true });
         }}
-        className="whitespace-nowrap rounded-md border border-ink-line px-2.5 py-1.5 text-xs text-ink-txt hover:bg-ink-700 sm:px-3"
+        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-ink-line px-3 py-1.5 text-xs text-ink-txt transition-colors hover:border-brand-500/60 hover:text-white"
       >
-        Salir
+        <LogOut size={13} /> Salir
       </button>
     </header>
   );
 }
 
 const linkClass = (isActive: boolean) =>
-  `block rounded-md px-3 py-2.5 text-sm transition-colors ${
-    isActive ? "bg-brand-600 text-white" : "text-ink-mut hover:bg-ink-700 hover:text-ink-txt"
+  `flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm transition-all duration-200 ${
+    isActive
+      ? "bg-brand-600 font-medium text-white shadow-md shadow-brand-700/30"
+      : "text-ink-mut hover:bg-ink-700/60 hover:text-ink-txt"
   }`;
+
+function BrandBlock() {
+  return (
+    <div className="mb-3 hidden px-2 lg:block">
+      <div className="glass-card rounded-2xl p-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand-500">Sistema</p>
+        <p className="mt-1 text-xs leading-relaxed text-ink-mut">
+          Gestión integral de cocina, salón, despensa y finanzas.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 /** Sidebar on ≥lg; slide-in drawer with overlay below that. */
 function SidebarShell({ experiencia }: { experiencia: Experiencia }) {
@@ -73,7 +91,8 @@ function SidebarShell({ experiencia }: { experiencia: Experiencia }) {
       <Header experiencia={experiencia} onMenu={() => setDrawerOpen(true)} />
       <div className="flex min-h-0 flex-1">
         {/* Desktop sidebar */}
-        <nav className="hidden w-56 shrink-0 space-y-1 overflow-y-auto border-r border-ink-line bg-ink-800 p-3 lg:block">
+        <nav className="glass-nav hidden w-60 shrink-0 space-y-1 overflow-y-auto border-r border-white/8 p-3 lg:block">
+          <BrandBlock />
           {entries.map((entry) => (
             <NavLink key={entry.path} to={entry.path} end className={({ isActive }) => linkClass(isActive)}>
               {entry.label}
@@ -86,7 +105,7 @@ function SidebarShell({ experiencia }: { experiencia: Experiencia }) {
           <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setDrawerOpen(false)}>
             <div className="animate-fade absolute inset-0 bg-black/60" />
             <div
-              className="absolute inset-y-0 left-0 w-64 overflow-y-auto border-r border-ink-line bg-ink-800 p-3 shadow-2xl"
+              className="glass-nav absolute inset-y-0 left-0 w-72 overflow-y-auto border-r border-white/10 bg-ink-800/90 p-3 shadow-2xl"
               onClick={(event) => event.stopPropagation()}
             >
               <div className="mb-2 flex items-center justify-between px-2">
@@ -112,32 +131,34 @@ function SidebarShell({ experiencia }: { experiencia: Experiencia }) {
           </div>
         )}
 
-        <main className="min-w-0 flex-1 overflow-y-auto p-3 sm:p-5">
-          <Outlet />
+        <main className="min-w-0 flex-1 overflow-y-auto p-3 sm:p-6">
+          <div className="mx-auto max-w-6xl">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
   );
 }
 
-/** Horizontal task tabs; scrollable on narrow screens with hidden scrollbar. */
+/** Horizontal task tabs; scrollable on narrow screens. */
 function TopTabsShell({ experiencia }: { experiencia: Experiencia }) {
   const entries = useNavEntries(experiencia);
 
   return (
     <div className="flex h-screen flex-col bg-ink-900 text-ink-txt">
       <Header experiencia={experiencia} onMenu={() => {}} showMenu={false} />
-      <nav className="flex gap-2 overflow-x-auto border-b border-ink-line bg-ink-800 px-3 py-2">
+      <nav className="glass-nav flex gap-2 overflow-x-auto border-b border-white/8 px-3 py-2">
         {entries.map((entry) => (
           <NavLink
             key={entry.path}
             to={entry.path}
             end
             className={({ isActive }) =>
-              `whitespace-nowrap rounded-md border px-3 py-2 text-sm transition-colors ${
+              `whitespace-nowrap rounded-full border px-4 py-2 text-sm transition-all duration-200 ${
                 isActive
-                  ? "border-brand-600 bg-brand-600 text-white"
-                  : "border-ink-line text-ink-mut hover:text-ink-txt"
+                  ? "border-brand-500 bg-brand-600 font-medium text-white"
+                  : "border-ink-line text-ink-mut hover:border-brand-500/50 hover:text-ink-txt"
               }`
             }
           >
@@ -145,8 +166,10 @@ function TopTabsShell({ experiencia }: { experiencia: Experiencia }) {
           </NavLink>
         ))}
       </nav>
-      <main className="min-w-0 flex-1 overflow-y-auto p-3 sm:p-5">
-        <Outlet />
+      <main className="min-w-0 flex-1 overflow-y-auto p-3 sm:p-6">
+        <div className="mx-auto max-w-6xl">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
@@ -165,18 +188,18 @@ export function KitchenShell() {
   const entries = useNavEntries("kitchen");
 
   return (
-    <div className="flex h-screen flex-col bg-[#0a0e17] text-ink-txt">
+    <div className="flex h-screen flex-col bg-[#140f0a] text-ink-txt">
       <Header experiencia="kitchen" onMenu={() => {}} showMenu={false} />
-      <nav className="flex gap-3 overflow-x-auto border-b border-ink-line bg-ink-800 px-4 py-3">
+      <nav className="glass-nav flex gap-3 overflow-x-auto border-b border-white/8 px-4 py-3">
         {entries.map((entry) => (
           <NavLink
             key={entry.path}
             to={entry.path}
             end
             className={({ isActive }) =>
-              `whitespace-nowrap rounded-lg border px-4 py-2 text-base font-medium transition-colors ${
+              `whitespace-nowrap rounded-xl border px-4 py-2 text-base font-medium transition-all duration-200 ${
                 isActive
-                  ? "border-brand-500 bg-brand-600 text-white"
+                  ? "border-brand-500 bg-brand-600 text-white shadow-md shadow-brand-700/30"
                   : "border-ink-line text-ink-mut hover:text-ink-txt"
               }`
             }

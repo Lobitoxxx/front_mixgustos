@@ -117,7 +117,7 @@ export default function BentoSistema() {
           {CELLS.map((cell) => (
             <div
               key={cell.title}
-              className="group rounded-3xl border border-sand-line/50 bg-sand-800/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand-500/50 hover:bg-sand-800"
+              className="glass-card group rounded-3xl p-6"
             >
               <span
                 className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-inner ${cell.tint}`}

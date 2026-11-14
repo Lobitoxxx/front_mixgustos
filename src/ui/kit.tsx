@@ -28,10 +28,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`max-w-sm rounded-lg border px-4 py-2.5 text-sm shadow-xl ${
+            className={`animate-pop max-w-sm rounded-xl border px-4 py-2.5 text-sm shadow-xl backdrop-blur-md ${
               toast.ok
-                ? "border-emerald-500/50 bg-emerald-950 text-emerald-200"
-                : "border-red-500/50 bg-red-950 text-red-200"
+                ? "border-emerald-400/30 bg-emerald-950/70 text-emerald-200"
+                : "border-red-400/30 bg-red-950/70 text-red-200"
             }`}
           >
             {toast.text}
@@ -94,9 +94,9 @@ export function useData<T>(
 
 export function Card({ title, children, actions }: { title: string; children: ReactNode; actions?: ReactNode }) {
   return (
-    <section className="rounded-xl border border-ink-line bg-ink-800 p-4">
-      <div className="mb-3 flex items-center gap-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-mut">{title}</h2>
+    <section className="glass-card rounded-2xl p-4 sm:p-5">
+      <div className="mb-3 flex flex-wrap items-center gap-3">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.15em] text-ink-mut">{title}</h2>
         <div className="flex-1" />
         {actions}
       </div>
@@ -115,7 +115,7 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 }
 
 const inputClass =
-  "w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-sm outline-none focus:border-brand-500";
+  "glass-input w-full rounded-lg px-3 py-2 text-sm text-ink-txt placeholder:text-ink-mut/50";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={inputClass} />;
@@ -129,9 +129,9 @@ export function Button({
   kind = "primary", busy, ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { kind?: "primary" | "ghost" | "danger" | "glass"; busy?: boolean }) {
   const styles = {
-    primary: "bg-brand-600 hover:bg-brand-700 text-white border-transparent",
-    ghost: "border-ink-line text-ink-txt hover:bg-ink-700",
-    danger: "border-red-500/60 text-red-300 hover:bg-red-950",
+    primary: "border-transparent bg-brand-600 text-white shadow-sm shadow-brand-700/30 hover:bg-brand-700",
+    ghost: "border-ink-line text-ink-txt hover:border-brand-500/50 hover:text-white",
+    danger: "border-red-500/50 text-red-300 hover:border-red-500 hover:bg-red-950/40",
     // Liquid-glass pill used on the public site (video/photo backgrounds).
     glass: "liquid-glass !rounded-full px-5 py-2 text-white hover:bg-white/10",
   }[kind];
@@ -139,7 +139,7 @@ export function Button({
     <button
       {...props}
       disabled={props.disabled || busy}
-      className={`rounded-md border px-3 py-1.5 text-sm font-medium disabled:opacity-40 ${styles} ${props.className ?? ""}`}
+      className={`press inline-flex items-center justify-center gap-1.5 rounded-full border px-4 py-1.5 text-sm font-medium transition-all duration-200 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 disabled:opacity-40 ${styles} ${props.className ?? ""}`}
     />
   );
 }
@@ -174,27 +174,27 @@ const PILL: Record<string, string> = {
 };
 
 export function Pill({ value }: { value: string }) {
-  const style = PILL[value] ?? "bg-ink-700 text-ink-txt";
-  return <span className={`inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${style}`}>{value}</span>;
+  const style = PILL[value] ?? "bg-white/5 text-ink-txt border border-white/10";
+  return <span className={`inline-block rounded-full border border-white/5 px-2.5 py-0.5 text-[11px] font-medium backdrop-blur-sm ${style}`}>{value}</span>;
 }
 
 export function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
   if (rows.length === 0) {
-    return <p className="py-4 text-center text-sm text-ink-mut">Sin registros.</p>;
+    return <p className="py-6 text-center text-sm text-ink-mut">Sin registros.</p>;
   }
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-ink-line text-left text-xs uppercase tracking-wide text-ink-mut">
-            {head.map((cell) => <th key={cell} className="px-2 py-2">{cell}</th>)}
+          <tr className="border-b border-ink-line/60 text-left text-[11px] uppercase tracking-wider text-ink-mut">
+            {head.map((cell) => <th key={cell} className="px-2 py-2.5">{cell}</th>)}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index} className="border-b border-ink-line/60 hover:bg-ink-700/40">
+            <tr key={index} className="border-b border-ink-line/40 transition-colors last:border-0 hover:bg-ink-700/30">
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="px-2 py-2 align-top">{cell}</td>
+                <td key={cellIndex} className="px-2 py-2.5 align-top">{cell}</td>
               ))}
             </tr>
           ))}
@@ -209,9 +209,9 @@ export function Modal({ open, title, onClose, children }: {
 }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4" onClick={onClose}>
+    <div className="animate-fade fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full max-w-md rounded-xl border border-ink-line bg-ink-800 p-5"
+        className="glass-card animate-pop max-h-[88vh] w-full max-w-md overflow-y-auto rounded-2xl bg-ink-800/90 p-5"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">

@@ -61,21 +61,21 @@ export default function RegisterFlow({ onDone }: { onDone: () => void }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nombre y apellido"
-            className="w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-sm text-ink-txt outline-none focus:border-brand-500"
+            className="glass-input w-full rounded-lg px-3 py-2 text-sm text-ink-txt"
           />
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Correo electrónico"
-            className="w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-sm text-ink-txt outline-none focus:border-brand-500"
+            className="glass-input w-full rounded-lg px-3 py-2 text-sm text-ink-txt"
           />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Contraseña (mínimo 8 caracteres)"
-            className="w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-sm text-ink-txt outline-none focus:border-brand-500"
+            className="glass-input w-full rounded-lg px-3 py-2 text-sm text-ink-txt"
           />
           <button
             disabled={!valid}

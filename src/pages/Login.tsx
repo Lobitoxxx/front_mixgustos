@@ -15,14 +15,13 @@ export default function Login() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "register">("login");
 
-  const destination =
-    (location.state as { from?: string } | null)?.from ?? (me ? `/${experienciaInicial(me.permissions)}` : "/");
+  const from = (location.state as { from?: string } | null)?.from;
 
-  if (status === "ready") return <Navigate to={destination} replace />;
+  if (status === "ready" && !from) return <Navigate to={`/${experienciaInicial(me?.permissions ?? [])}`} replace />;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-sand-950 p-4 text-sand-txt">
-      <div className="w-full max-w-sm rounded-2xl border border-sand-line bg-sand-900 p-6 shadow-2xl sm:p-8">
+      <div className="glass-card animate-pop w-full max-w-sm rounded-2xl bg-sand-900/80 p-6 shadow-2xl sm:p-8">
         <div className="mb-5 flex items-center justify-center gap-2">
           <Logo size={26} />
           <span className="text-lg font-medium tracking-tight">mixgustos</span>
@@ -30,7 +29,11 @@ export default function Login() {
 
         {mode === "login" ? (
           <>
-            <LoginForm onSuccess={() => navigate(destination, { replace: true })} />
+            <LoginForm
+              onSuccess={(session) =>
+                navigate(from ?? `/${experienciaInicial(session.permissions)}`, { replace: true })
+              }
+            />
             <button
               onClick={() => setMode("register")}
               className="mt-4 w-full text-center text-xs text-brand-500 hover:underline"

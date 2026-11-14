@@ -47,7 +47,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: (me: Me) => void 
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-ink-txt outline-none focus:border-brand-500"
+          className="glass-input mt-1 w-full rounded-lg px-3 py-2 text-ink-txt"
         />
       </label>
 
@@ -58,7 +58,7 @@ export default function LoginForm({ onSuccess }: { onSuccess?: (me: Me) => void 
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-ink-txt outline-none focus:border-brand-500"
+          className="glass-input mt-1 w-full rounded-lg px-3 py-2 text-ink-txt"
         />
       </label>
 

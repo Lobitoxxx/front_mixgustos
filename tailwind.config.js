@@ -10,9 +10,11 @@ export default {
           950: "#1c1610", 900: "#2c221c", 800: "#3a2e25", 700: "#4a3a2e",
           line: "#57463a", txt: "#f6f1ea", mut: "#c4b3a4",
         },
+        // Shared warm canvas — the internal app uses the same palette as the
+        // public site (§ landing) so both feel like one product.
         ink: {
-          900: "#0f1420", 800: "#171e2e", 700: "#1d2537",
-          line: "#253049", txt: "#e8ecf6", mut: "#8fa0c0",
+          900: "#1c1610", 800: "#2c221c", 700: "#3a2e25",
+          line: "#4a3a2e", txt: "#f6f1ea", mut: "#c4b3a4",
         },
       },
       fontFamily: {
