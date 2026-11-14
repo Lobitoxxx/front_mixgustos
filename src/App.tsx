@@ -7,28 +7,33 @@ import { RequireAuth, RequirePermiso } from "./app/guards";
 import { AdminShell, OpShell, KitchenShell } from "./app/shells";
 import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
-import { NAV } from "./nav/config";
 
 const Resumen = lazy(() => import("./pages/Resumen"));
-const Modulo = lazy(() => import("./pages/Modulo"));
+const Salon = lazy(() => import("./features/op/Salon"));
+const Pos = lazy(() => import("./features/op/Pos"));
+const Recepcion = lazy(() => import("./features/op/Recepcion"));
+const Cola = lazy(() => import("./features/kitchen/Cola"));
+const Despacho = lazy(() => import("./features/kitchen/Despacho"));
+const Recetas = lazy(() => import("./features/kitchen/Recetas"));
+const Productos = lazy(() => import("./features/admin/Productos"));
+const Compras = lazy(() => import("./features/admin/Compras"));
+const Inventario = lazy(() => import("./features/admin/Inventario"));
+const Produccion = lazy(() => import("./features/admin/Produccion"));
+const Ventas = lazy(() => import("./features/admin/Ventas"));
+const Caja = lazy(() => import("./features/admin/Caja"));
+const Personal = lazy(() => import("./features/admin/Personal"));
+const Horarios = lazy(() => import("./features/admin/Horarios"));
+const Finanzas = lazy(() => import("./features/admin/Finanzas"));
+const Reportes = lazy(() => import("./features/admin/Reportes"));
+const Notificaciones = lazy(() => import("./features/admin/Notificaciones"));
+const Configuracion = lazy(() => import("./features/admin/Configuracion"));
 
 function Cargando() {
   return <p className="p-5 text-ink-mut">Cargando módulo…</p>;
 }
 
-/** Wraps a module route with its permission gate. */
-function modulo(experiencia: "admin" | "op" | "kitchen", prefix: string, perm: string | null, relPath: string) {
-  return (
-    <Route
-      key={`${prefix}/${relPath}`}
-      path={relPath}
-      element={
-        <RequirePermiso code={perm}>
-          <Modulo experiencia={experiencia} />
-        </RequirePermiso>
-      }
-    />
-  );
+function pagina(element: React.ReactNode, perm: string | null) {
+  return <RequirePermiso code={perm}>{element}</RequirePermiso>;
 }
 
 export default function App() {
@@ -55,11 +60,18 @@ export default function App() {
               </Suspense>
             }
           />
-          {NAV.admin
-            .filter((entry) => entry.path !== "/admin")
-            .map((entry) =>
-              modulo("admin", "/admin", entry.perm, entry.path.slice("/admin/".length)),
-            )}
+          <Route path="productos" element={pagina(<Productos />, "products.view")} />
+          <Route path="compras" element={pagina(<Compras />, "purchasing.view")} />
+          <Route path="inventario" element={pagina(<Inventario />, "inventory.view")} />
+          <Route path="produccion" element={pagina(<Produccion />, "production.view")} />
+          <Route path="ventas" element={pagina(<Ventas />, "sales.view")} />
+          <Route path="caja" element={pagina(<Caja />, "cash.view")} />
+          <Route path="personal" element={pagina(<Personal />, "staff.view")} />
+          <Route path="horarios" element={pagina(<Horarios />, "schedules.view")} />
+          <Route path="finanzas" element={pagina(<Finanzas />, "finance.view")} />
+          <Route path="reportes" element={pagina(<Reportes />, "reports.view")} />
+          <Route path="notificaciones" element={pagina(<Notificaciones />, null)} />
+          <Route path="configuracion" element={pagina(<Configuracion />, "settings.manage")} />
         </Route>
 
         {/* B. Aplicación operativa */}
@@ -72,9 +84,9 @@ export default function App() {
           }
         >
           <Route index element={<Navigate to="/op/salon" replace />} />
-          {NAV.op.map((entry) =>
-            modulo("op", "/op", entry.perm, entry.path.slice("/op/".length)),
-          )}
+          <Route path="salon" element={pagina(<Salon />, "tables.view")} />
+          <Route path="pos" element={pagina(<Pos />, "sales.create")} />
+          <Route path="recepcion" element={pagina(<Recepcion />, "inventory.receive")} />
         </Route>
 
         {/* D. Panel de cocina y despacho */}
@@ -87,9 +99,9 @@ export default function App() {
           }
         >
           <Route index element={<Navigate to="/kitchen/cola" replace />} />
-          {NAV.kitchen.map((entry) =>
-            modulo("kitchen", "/kitchen", entry.perm, entry.path.slice("/kitchen/".length)),
-          )}
+          <Route path="cola" element={pagina(<Cola />, "orders.view")} />
+          <Route path="despacho" element={pagina(<Despacho />, "dispatch.view")} />
+          <Route path="recetas" element={pagina(<Recetas />, "recipes.view")} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

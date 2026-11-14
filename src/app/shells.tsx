@@ -38,7 +38,7 @@ function Header({ experiencia }: { experiencia: Experiencia }) {
   );
 }
 
-function SidebarShell({ experiencia, title }: { experiencia: Experiencia; title: string }) {
+function SidebarShell({ experiencia }: { experiencia: Experiencia }) {
   const entries = useNavEntries(experiencia);
 
   return (
@@ -62,7 +62,7 @@ function SidebarShell({ experiencia, title }: { experiencia: Experiencia; title:
           ))}
         </nav>
         <main className="min-w-0 flex-1 overflow-y-auto p-5">
-          <Outlet context={{ entries, title }} />
+          <Outlet />
         </main>
       </div>
     </div>
@@ -94,14 +94,14 @@ function TopTabsShell({ experiencia }: { experiencia: Experiencia }) {
         ))}
       </nav>
       <main className="min-w-0 flex-1 overflow-y-auto p-5">
-        <Outlet context={{ entries }} />
+        <Outlet />
       </main>
     </div>
   );
 }
 
 export function AdminShell() {
-  return <SidebarShell experiencia="admin" title="Administración" />;
+  return <SidebarShell experiencia="admin" />;
 }
 
 export function OpShell() {

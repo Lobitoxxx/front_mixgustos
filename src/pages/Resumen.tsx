@@ -14,6 +14,8 @@ export default function Resumen() {
   const { entries } = useOutletContext<OutletData>();
   const modules = entries.filter((entry) => entry.path !== "/admin");
 
+  if (!me) return null;
+
   return (
     <div className="space-y-5">
       <div>

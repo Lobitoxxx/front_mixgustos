@@ -37,7 +37,7 @@ export const NAV: Record<Experiencia, NavEntry[]> = {
     { label: "Recepción", path: "/op/recepcion", perm: "inventory.receive", fase: 2, desc: "Recepción de mercadería desde órdenes de compra; genera lotes." },
   ],
   kitchen: [
-    { label: "Cola de cocina", path: "/kitchen/cola", perm: "production.view", fase: 2, desc: "Pedidos en vivo: enviados → en preparación → listos." },
+    { label: "Cola de cocina", path: "/kitchen/cola", perm: "orders.view", fase: 2, desc: "Pedidos en vivo: enviados → en preparación → listos." },
     { label: "Despacho", path: "/kitchen/despacho", perm: "dispatch.view", fase: 2, desc: "Llevar/web: verificar → empacar → listo → entregar; incidencias." },
     { label: "Recetas", path: "/kitchen/recetas", perm: "recipes.view", fase: 2, desc: "Recetas versionadas y fichas técnicas." },
   ],
