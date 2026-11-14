@@ -26,7 +26,7 @@ type Status = "loading" | "anonymous" | "ready";
 interface AuthState {
   status: Status;
   me: Me | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<Me>;
   logout: () => Promise<void>;
   hasPermission: (code: string) => boolean;
 }
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string): Promise<Me> => {
     const response = await api<LoginResponse>("/auth/login", {
       method: "POST",
       body: { email, password },
@@ -68,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await api<Me>("/auth/me");
     setMe(data);
     setStatus("ready");
+    return data;
   }, []);
 
   const logout = useCallback(async () => {

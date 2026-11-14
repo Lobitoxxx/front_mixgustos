@@ -5,8 +5,9 @@ import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RequireAuth, RequirePermiso } from "./app/guards";
 import { AdminShell, OpShell, KitchenShell } from "./app/shells";
-import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
+
+const Landing = lazy(() => import("./features/public/Landing"));
 
 const Resumen = lazy(() => import("./pages/Resumen"));
 const Salon = lazy(() => import("./features/op/Salon"));
@@ -41,7 +42,8 @@ export default function App() {
     <Suspense fallback={<Cargando />}>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Inicio />} />
+        {/* Public restaurant website (experience C groundwork). */}
+        <Route path="/" element={<Landing />} />
 
         {/* A. Aplicación administrativa */}
         <Route

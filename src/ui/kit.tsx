@@ -127,11 +127,13 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 
 export function Button({
   kind = "primary", busy, ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { kind?: "primary" | "ghost" | "danger"; busy?: boolean }) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { kind?: "primary" | "ghost" | "danger" | "glass"; busy?: boolean }) {
   const styles = {
     primary: "bg-brand-600 hover:bg-brand-700 text-white border-transparent",
     ghost: "border-ink-line text-ink-txt hover:bg-ink-700",
     danger: "border-red-500/60 text-red-300 hover:bg-red-950",
+    // Liquid-glass pill used on the public site (video/photo backgrounds).
+    glass: "liquid-glass !rounded-full px-5 py-2 text-white hover:bg-white/10",
   }[kind];
   return (
     <button
@@ -139,6 +141,15 @@ export function Button({
       disabled={props.disabled || busy}
       className={`rounded-md border px-3 py-1.5 text-sm font-medium disabled:opacity-40 ${styles} ${props.className ?? ""}`}
     />
+  );
+}
+
+/** Glass surface panel for overlays over imagery (public site sections). */
+export function GlassPanel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`liquid-glass !overflow-visible rounded-2xl ${className}`}>
+      <div className="relative">{children}</div>
+    </div>
   );
 }
 
