@@ -89,7 +89,7 @@ export default function RegisterFlow({ onDone }: { onDone: () => void }) {
 
       {step === "terminos" && (
         <div className="space-y-3">
-          <div className="max-h-56 overflow-y-auto rounded-lg border border-ink-line bg-ink-900 p-4">
+          <div className="glass-input max-h-56 overflow-y-auto rounded-lg p-4">
             <Terms />
           </div>
           <label className="flex items-start gap-2 text-xs text-ink-mut">
@@ -133,7 +133,7 @@ export default function RegisterFlow({ onDone }: { onDone: () => void }) {
 
       {step === "cookies" && (
         <div className="space-y-3">
-          <div className="flex items-start gap-3 rounded-lg border border-ink-line bg-ink-900 p-4">
+          <div className="glass-card flex items-start gap-3 rounded-lg p-4">
             <Cookie size={18} className="mt-0.5 shrink-0 text-brand-500" />
             <p className="text-xs leading-relaxed text-ink-mut">
               Para mejorar tu experiencia en tus dispositivos usamos cookies de

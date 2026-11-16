@@ -20,7 +20,7 @@ export default function Modulo({ experiencia }: { experiencia: Experiencia }) {
 function Placeholder({ entry, experiencia }: { entry: NavEntry | undefined; experiencia: Experiencia }) {
   if (!entry) {
     return (
-      <div className="rounded-xl border border-ink-line bg-ink-800 p-6 text-ink-mut">
+      <div className="glass-card rounded-xl p-6 text-ink-mut">
         Módulo no registrado en la navegación ({LABEL[experiencia]}).
       </div>
     );
@@ -32,7 +32,7 @@ function Placeholder({ entry, experiencia }: { entry: NavEntry | undefined; expe
         <h1 className="text-xl font-bold">{entry.label}</h1>
         <p className="text-sm text-ink-mut">{entry.desc}</p>
       </div>
-      <div className="rounded-xl border border-ink-line bg-ink-800 p-6">
+      <div className="glass-card rounded-xl p-6">
         <p className="text-lg font-semibold">Pantalla en construcción</p>
         <p className="mt-2 text-sm text-ink-mut">
           Esta ventana pertenece a la{" "}

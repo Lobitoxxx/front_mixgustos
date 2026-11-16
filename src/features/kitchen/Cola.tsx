@@ -35,7 +35,7 @@ const GROUPS: { status: string; title: string; next?: string; nextLabel?: string
               <div className="space-y-2">
                 {items.length === 0 && <p className="text-sm text-ink-mut">—</p>}
                 {items.map((order) => (
-                  <div key={order.id} className="rounded-lg border border-ink-line bg-ink-700/50 p-3">
+                  <div key={order.id} className="glass-card rounded-lg p-3">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-xs">{order.id.slice(0, 8)}</span>
                       <Pill value={order.channel} />

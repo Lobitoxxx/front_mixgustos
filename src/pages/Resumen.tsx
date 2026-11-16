@@ -28,7 +28,7 @@ export default function Resumen() {
   return (
     <div className="space-y-6">
       {/* ── Welcome band ─────────────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-3xl border border-ink-line bg-gradient-to-br from-ink-800 via-ink-800 to-brand-700/20 p-6 sm:p-8">
+      <div className="glass-card relative overflow-hidden rounded-3xl p-6 sm:p-8">
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-500/10 blur-2xl" />
         <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-500">
           <Sparkles size={13} /> Panel del día

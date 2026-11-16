@@ -115,7 +115,7 @@ export default function Recetas() {
             <select
               value={newProduct}
               onChange={(e) => setNewProduct(e.target.value)}
-              className="w-full rounded-md border border-ink-line bg-ink-900 px-3 py-2 text-sm"
+              className="glass-input w-full rounded-md px-3 py-2 text-sm"
             >
               <option value="">Selecciona…</option>
               {(products.data ?? []).map((p) => (

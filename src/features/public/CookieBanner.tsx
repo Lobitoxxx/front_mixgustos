@@ -39,7 +39,7 @@ export default function CookieBanner() {
   };
 
   return (
-    <div className="animate-slide-up fixed inset-x-4 bottom-4 z-50 mx-auto max-w-2xl rounded-2xl border border-sand-line bg-sand-900/95 p-5 shadow-2xl backdrop-blur-xl">
+    <div className="glass-card animate-slide-up fixed inset-x-4 bottom-4 z-50 mx-auto max-w-2xl rounded-2xl bg-sand-900/90 p-5 shadow-2xl backdrop-blur-xl">
       <div className="flex items-start gap-3">
         <Cookie size={20} className="mt-0.5 shrink-0 text-brand-500" />
         <div className="min-w-0">

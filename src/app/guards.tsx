@@ -27,7 +27,7 @@ export function RequirePermiso({ code, children }: { code: string | null; childr
   const { hasPermission } = useAuth();
   if (code && !hasPermission(code)) {
     return (
-      <div className="rounded-xl border border-ink-line bg-ink-800 p-6 text-center">
+      <div className="glass-card rounded-xl p-6 text-center">
         <p className="text-lg font-semibold">Sin acceso</p>
         <p className="mt-1 text-sm text-ink-mut">
           Tu sesión no tiene el permiso <code className="rounded bg-ink-700 px-1">{code}</code>.
