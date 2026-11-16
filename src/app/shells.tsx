@@ -7,7 +7,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { LogOut, Menu, X } from "lucide-react";
 import { useAuth } from "../auth/AuthContext";
-import { NAV, type Experiencia } from "../nav/config";
+import { NAV, experienciasDisponibles, type Experiencia } from "../nav/config";
 import Logo from "../features/public/Logo";
 
 function useNavEntries(experiencia: Experiencia) {
@@ -20,6 +20,36 @@ const EXPERIENCIA_LABEL: Record<Experiencia, string> = {
   op: "Operación",
   kitchen: "Cocina",
 };
+
+/** Header switcher: every experience the session can open, as glass pills.
+ *  Shown only when the session qualifies for more than one. */
+function ExperienciaSwitcher({ actual }: { actual: Experiencia }) {
+  const { me } = useAuth();
+  const disponibles = experienciasDisponibles(me?.permissions ?? []).filter(
+    (exp) => exp !== actual,
+  );
+  if (disponibles.length === 0) return null;
+  return (
+    <div className="hidden items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1 sm:flex">
+      {([actual, ...disponibles] as Experiencia[]).map((exp) => (
+        <NavLink
+          key={exp}
+          to={`/${exp}`}
+          end
+          className={({ isActive }) =>
+            `press whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-semibold transition-colors ${
+              isActive
+                ? "bg-brand-600 text-white shadow-sm shadow-brand-700/30"
+                : "text-ink-mut hover:text-ink-txt"
+            }`
+          }
+        >
+          {EXPERIENCIA_LABEL[exp]}
+        </NavLink>
+      ))}
+    </div>
+  );
+}
 
 function Header({ experiencia, onMenu, showMenu = true }: { experiencia: Experiencia; onMenu: () => void; showMenu?: boolean }) {
   const { me, logout } = useAuth();
@@ -38,11 +68,9 @@ function Header({ experiencia, onMenu, showMenu = true }: { experiencia: Experie
       )}
       <NavLink to="/" className="flex items-center gap-1.5 text-ink-txt" title="Volver a la web del restaurante">
         <Logo size={22} />
-        <span className="whitespace-nowrap text-sm font-semibold tracking-tight">mixgustos</span>
+        <span className="hidden whitespace-nowrap text-sm font-semibold tracking-tight sm:inline">mixgustos</span>
       </NavLink>
-      <span className="hidden rounded-full bg-brand-600/90 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white sm:inline">
-        {EXPERIENCIA_LABEL[experiencia]}
-      </span>
+      <ExperienciaSwitcher actual={experiencia} />
       <div className="flex-1" />
       <span className="truncate text-xs text-ink-mut">
         {me?.display_name}

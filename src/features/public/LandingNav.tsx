@@ -29,14 +29,6 @@ const ITEMS: NavItem[] = [
       { label: "Postres y bebidas", href: "#carta" },
     ],
   },
-  {
-    label: "El Sistema",
-    href: "#sistema",
-    children: [
-      { label: "Cómo trabajamos", href: "#sistema" },
-      { label: "Módulos", href: "#sistema" },
-    ],
-  },
   { label: "Contacto", href: "#contacto" },
 ];
 

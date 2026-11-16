@@ -24,7 +24,7 @@ const SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "6. Cookies",
-    body: "Usamos cookies esenciales (sesión y seguridad) y, con tu consentimiento, cookies de preferencias y analítica para mejorar la experiencia en tus dispositivos. Puedes cambiar tu decisión en cualquier momento desde el banner de cookies.",
+    body: "Usamos cookies esenciales (sesión y seguridad) y, con tu consentimiento, cookies de preferencias y analítica para mejorar la experiencia en tus dispositivos. Puedes cambiar tu decisión en cualquier momento desde el aviso de privacidad del pie de página.",
   },
   {
     title: "7. Responsabilidad",

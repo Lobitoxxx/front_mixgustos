@@ -4,7 +4,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Flame, Pencil, Plus, RotateCcw, Trash2, UtensilsCrossed, Soup, CakeSlice, CupSoda, Leaf } from "lucide-react";
-import useReveal, { revealClass } from "./useReveal";
+import useReveal, { edgeClass } from "./useReveal";
 import DishForm, { draftFrom, emptyDraft, type DishDraft } from "./DishForm";
 import {
   addDish, listDishes, removeDish, resetDishes, updateDish, type Dish,
@@ -76,6 +76,7 @@ export default function CartaDemo() {
 
   const head = useReveal();
   const grid = useReveal();
+  const cards = useReveal();
 
   const visible = dishes.filter((dish) => dish.category === active);
 
@@ -83,7 +84,7 @@ export default function CartaDemo() {
     <section id="carta" className="relative scroll-mt-16 bg-sand-950 px-5 py-20 sm:px-8 md:px-12 md:py-28 lg:px-16">
       <div className="mx-auto max-w-6xl">
         {/* ── Head with the edit-mode switch ─────────────────────────── */}
-        <div ref={head.ref} className={`flex flex-wrap items-end justify-between gap-4 ${revealClass(head.revealed)}`}>
+        <div ref={head.ref} className={`flex flex-wrap items-end justify-between gap-4 ${edgeClass(head.revealed)}`}>
           <div className="max-w-xl">
             <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-brand-500">
               <Flame size={14} /> Así verá tu carta
@@ -123,7 +124,7 @@ export default function CartaDemo() {
         </div>
 
         {/* ── Category tabs ──────────────────────────────────────────── */}
-        <div ref={grid.ref} className={`mt-10 flex flex-wrap items-center gap-2 ${revealClass(grid.revealed)}`}>
+        <div ref={grid.ref} className={`mt-10 flex flex-wrap items-center gap-2 ${edgeClass(grid.revealed, 120)}`}>
           {[...new Set(dishes.map((dish) => dish.category))].map((category) => {
             const Icon = CATEGORY_ICON[category] ?? UtensilsCrossed;
             return (
@@ -157,11 +158,11 @@ export default function CartaDemo() {
         </div>
 
         {/* ── Dish cards ─────────────────────────────────────────────── */}
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((dish) => (
+        <div ref={cards.ref} className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((dish, index) => (
             <article
               key={dish.id}
-              className="group overflow-hidden rounded-2xl border border-sand-line/60 bg-sand-900 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-500/60 hover:shadow-xl hover:shadow-black/30"
+              className={`sweep group overflow-hidden rounded-2xl border border-sand-line/60 bg-sand-900 transition-all duration-300 hover:-translate-y-1 hover:border-brand-500/60 hover:shadow-xl hover:shadow-black/30 ${edgeClass(cards.revealed, index * 70)}`}
             >
               <div className="relative">
                 <DishPhoto dish={dish} />
@@ -197,7 +198,9 @@ export default function CartaDemo() {
               <div className="p-5">
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="font-semibold text-sand-txt">{dish.name}</h3>
-                  <span className="shrink-0 font-semibold text-brand-500">S/ {dish.price.toFixed(2)}</span>
+                  <span className="shrink-0 rounded-lg bg-brand-500/10 px-2 py-0.5 font-semibold text-brand-500">
+                    S/ {dish.price.toFixed(2)}
+                  </span>
                 </div>
                 <p className="mt-1.5 text-sm leading-relaxed text-sand-mut">{dish.description}</p>
               </div>

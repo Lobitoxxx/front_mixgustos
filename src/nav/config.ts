@@ -52,3 +52,20 @@ export function experienciaInicial(permisos: string[]): Experiencia {
   if (opPerms.some((p) => permisos.includes(p)) && permisos.length <= 12) return "op";
   return "admin";
 }
+
+/** Experiences the session can actually open, based on any of their gating
+ *  permissions — drives the header switcher (multi-role sessions see all). */
+export function experienciasDisponibles(permisos: string[]): Experiencia[] {
+  const gating: Record<Experiencia, string[]> = {
+    admin: [
+      "products.view", "purchasing.view", "inventory.view", "production.view",
+      "sales.view", "cash.view", "staff.view", "schedules.view",
+      "finance.view", "reports.view", "settings.manage",
+    ],
+    op: ["tables.view", "sales.create", "inventory.receive"],
+    kitchen: ["orders.view", "dispatch.view", "recipes.view"],
+  };
+  return (Object.keys(gating) as Experiencia[]).filter((exp) =>
+    gating[exp].some((perm) => permisos.includes(perm)),
+  );
+}

@@ -35,3 +35,10 @@ export default function useReveal<T extends HTMLElement = HTMLDivElement>(thresh
 export const revealClass = (revealed: boolean, delay = 0) =>
   `transition-all duration-700 ease-out ${revealed ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}` +
   (delay ? ` [transition-delay:${delay}ms]` : "");
+
+/** Edge → center reveal: the surface unfolds from its edges with blur and a
+ *  light band sweeping across (see `.reveal-edge` in index.css). Needs
+ *  `position:relative` and, over imagery, `overflow:hidden`. */
+export const edgeClass = (revealed: boolean, delay = 0) =>
+  `reveal-edge relative ${revealed ? "revealed" : "opacity-0"}` +
+  (delay ? ` [animation-delay:${delay}ms]` : "");

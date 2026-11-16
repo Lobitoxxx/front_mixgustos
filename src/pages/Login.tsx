@@ -2,7 +2,7 @@
 //! background. Keeps the redirect logic to the operator's home experience.
 
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { experienciaInicial } from "../nav/config";
 import LoginForm from "../features/public/LoginForm";
@@ -17,14 +17,32 @@ export default function Login() {
 
   const from = (location.state as { from?: string } | null)?.from;
 
+  // Escape takes the visitor back to the public site.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") navigate("/", { replace: true });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [navigate]);
+
   if (status === "ready" && !from) return <Navigate to={`/${experienciaInicial(me?.permissions ?? [])}`} replace />;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-sand-950 p-4 text-sand-txt">
       <div className="glass-card animate-pop w-full max-w-sm rounded-2xl bg-sand-900/80 p-6 shadow-2xl sm:p-8">
-        <div className="mb-5 flex items-center justify-center gap-2">
-          <Logo size={26} />
-          <span className="text-lg font-medium tracking-tight">mixgustos</span>
+        <div className="mb-5 flex items-center justify-between">
+          <button
+            onClick={() => navigate("/", { replace: true })}
+            className="press rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-sand-mut hover:border-white/25 hover:text-sand-txt"
+            aria-label="Volver a la página principal"
+          >
+            ← Volver a la web
+          </button>
+          <div className="flex items-center gap-2">
+            <Logo size={24} />
+            <span className="text-base font-medium tracking-tight">mixgustos</span>
+          </div>
         </div>
 
         {mode === "login" ? (

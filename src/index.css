@@ -131,6 +131,96 @@ body {
 
 .duration-400 { transition-duration: 400ms; }
 
+/* ── Scroll-driven "edge → center" reveals ────────────────────────────────
+   Elements start collapsed at their edges with a soft blur, then unfold to
+   full size while a light band sweeps across them, drawing the eye inward. */
+@keyframes edge-in {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) rotateX(6deg) scale(0.93) translateY(22px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+.reveal-edge { opacity: 0; }
+.reveal-edge.revealed { animation: edge-in 0.85s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes light-sweep {
+  0% { transform: translateX(-140%) skewX(-20deg); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translateX(260%) skewX(-20deg); opacity: 0; }
+}
+.reveal-edge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38%;
+  z-index: 2;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.16) 45%,
+    rgba(255, 255, 255, 0.03) 70%,
+    transparent
+  );
+  transform: translateX(-140%) skewX(-20deg);
+  pointer-events: none;
+}
+.reveal-edge.revealed::before {
+  animation: light-sweep 1.15s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+}
+
+/* Hover variant: the same light band travels across the surface. */
+.sweep { position: relative; overflow: hidden; }
+.sweep::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 38%;
+  z-index: 2;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.14) 45%,
+    rgba(255, 255, 255, 0.02) 70%,
+    transparent
+  );
+  transform: translateX(-140%) skewX(-20deg);
+  pointer-events: none;
+}
+.sweep:hover::before { animation: light-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Warm underline that grows from the center outwards on hover. */
+.link-underline { position: relative; }
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 0;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: translateX(-50%);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-underline:hover::after { width: 100%; }
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-edge { opacity: 1 !important; animation: none !important; }
+  .reveal-edge::before, .sweep::before { display: none; }
+  .animate-pop, .animate-fade, .animate-slide-up, .animate-dropdown { animation-duration: 0.01s; }
+}
+
 /* Thin warm scrollbars on dark canvases */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

@@ -32,7 +32,6 @@ export function Contacto({ onOpenTerms }: { onOpenTerms: () => void }) {
           <ul className="mt-3 space-y-2 text-sm text-sand-mut">
             <li><a href="#restaurante" className="hover:text-sand-txt">El restaurante</a></li>
             <li><a href="#carta" className="hover:text-sand-txt">La carta</a></li>
-            <li><a href="#sistema" className="hover:text-sand-txt">El sistema</a></li>
             <li><button onClick={onOpenTerms} className="hover:text-sand-txt">Términos y condiciones</button></li>
             <li><button onClick={onOpenTerms} className="hover:text-sand-txt">Política de cookies</button></li>
           </ul>

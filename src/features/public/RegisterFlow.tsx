@@ -6,7 +6,7 @@
 import { useState } from "react";
 import { Check, ChevronLeft, ScrollText, Cookie } from "lucide-react";
 import Terms from "./Terms";
-import { writeConsent } from "./CookieBanner";
+import { writeConsent } from "./ConsentGate";
 
 type Step = "datos" | "terminos" | "cookies" | "listo";
 

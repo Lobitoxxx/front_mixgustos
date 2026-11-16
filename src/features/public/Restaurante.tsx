@@ -1,7 +1,8 @@
 //! Editorial restaurant section: big ambience photo, dish gallery strip and
-//! fine-ruled KPIs — replacing the flat card layout.
+//! fine-ruled KPIs. Surfaces unfold from their edges with a light band as
+//! they enter the viewport (see `edgeClass` / `.sweep` in index.css).
 
-import useReveal, { revealClass } from "./useReveal";
+import useReveal, { edgeClass } from "./useReveal";
 
 // Stock imagery (editable; swap for the real restaurant's photos later).
 const AMBIENCE =
@@ -27,7 +28,7 @@ export default function Restaurante() {
     <section id="restaurante" className="relative scroll-mt-16 bg-sand-950 px-5 py-20 sm:px-8 md:px-12 md:py-28 lg:px-16">
       <div className="mx-auto max-w-6xl">
         {/* ── Editorial two-column block ─────────────────────────────── */}
-        <div ref={main.ref} className={`grid items-center gap-10 md:grid-cols-2 md:gap-14 ${revealClass(main.revealed)}`}>
+        <div ref={main.ref} className={`grid items-center gap-10 md:grid-cols-2 md:gap-14 ${edgeClass(main.revealed)}`}>
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-500">
               El restaurante
@@ -40,16 +41,18 @@ export default function Restaurante() {
             <p className="mt-5 max-w-md text-sm leading-relaxed text-sand-mut sm:text-base">
               En MixGustos cocinamos lo que se sirve en una casa: platos de
               temporada, insumos de proveedores locales y una carta que cambia
-              cuando cambia el mercado. Detrás de cada plato hay un lote, un
-              productor y un costo real — y lo sabemos porque el sistema lo
-              registra.
+              cuando cambia el mercado. Detrás de cada plato hay un productor
+              y una historia — y puedes probarla hoy.
             </p>
-            <a href="#carta" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-500 hover:underline">
+            <a
+              href="#carta"
+              className="link-underline mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-500"
+            >
               Descubre la carta →
             </a>
           </div>
           <div className="relative">
-            <div className="overflow-hidden rounded-3xl border border-sand-line/60 shadow-2xl">
+            <div className="sweep overflow-hidden rounded-3xl border border-sand-line/60 shadow-2xl">
               <img
                 src={AMBIENCE}
                 alt="Ambiente del restaurante"
@@ -65,15 +68,11 @@ export default function Restaurante() {
         </div>
 
         {/* ── Gallery strip ──────────────────────────────────────────── */}
-        <div
-          ref={gallery.ref}
-          className={`mt-16 grid gap-4 sm:grid-cols-3 md:mt-24 ${revealClass(gallery.revealed)}`}
-        >
+        <div ref={gallery.ref} className="mt-16 grid gap-4 sm:grid-cols-3 md:mt-24">
           {GALLERY.map((photo, index) => (
             <div
               key={photo.src}
-              className="group overflow-hidden rounded-2xl border border-sand-line/50"
-              style={{ transitionDelay: `${index * 90}ms` }}
+              className={`sweep group overflow-hidden rounded-2xl border border-sand-line/50 ${edgeClass(gallery.revealed, index * 110)}`}
             >
               <img
                 src={photo.src}
@@ -88,7 +87,7 @@ export default function Restaurante() {
         {/* ── KPIs with fine rules ───────────────────────────────────── */}
         <div
           ref={kpis.ref}
-          className={`mt-14 grid gap-px overflow-hidden rounded-2xl border border-sand-line/50 bg-sand-line/50 sm:grid-cols-3 md:mt-20 ${revealClass(kpis.revealed)}`}
+          className={`mt-14 grid gap-px overflow-hidden rounded-2xl border border-sand-line/50 bg-sand-line/50 sm:grid-cols-3 md:mt-20 ${edgeClass(kpis.revealed)}`}
         >
           {KPIS.map((kpi) => (
             <div key={kpi.label} className="bg-sand-900 px-6 py-8 text-center">
