@@ -1,37 +1,90 @@
 //! Route table: one lazy scope per experience (A, B, D). The client portal
 //! (C) is deferred until the architect answers the anonymous-portal design.
 
-import { lazy, Suspense } from "react";
+import { Component, lazy, Suspense } from "react";
+import type { ComponentType, ErrorInfo, ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RequireAuth, RequirePermiso } from "./app/guards";
 import { AdminShell, OpShell, KitchenShell } from "./app/shells";
 import Login from "./pages/Login";
 
-const Landing = lazy(() => import("./features/public/Landing"));
+/** lazy() with one automatic retry: a transient failure while fetching a
+ *  route module (flaky network, stale deploy) used to bubble up and leave a
+ *  blank window behind the Suspense fallback. The retry absorbs it; if the
+ *  second attempt also fails, the ErrorBoundary below takes over. */
+function vista(factory: () => Promise<{ default: ComponentType }>) {
+  return lazy(() =>
+    factory().catch((error) => {
+      console.warn("[mg] módulo falló al cargar, reintentando…", error);
+      return factory();
+    }),
+  );
+}
 
-const Resumen = lazy(() => import("./pages/Resumen"));
-const Salon = lazy(() => import("./features/op/Salon"));
-const Pos = lazy(() => import("./features/op/Pos"));
-const Recepcion = lazy(() => import("./features/op/Recepcion"));
-const Cola = lazy(() => import("./features/kitchen/Cola"));
-const Despacho = lazy(() => import("./features/kitchen/Despacho"));
-const Recetas = lazy(() => import("./features/kitchen/Recetas"));
-const Productos = lazy(() => import("./features/admin/Productos"));
-const Compras = lazy(() => import("./features/admin/Compras"));
-const Inventario = lazy(() => import("./features/admin/Inventario"));
-const Produccion = lazy(() => import("./features/admin/Produccion"));
-const Ventas = lazy(() => import("./features/admin/Ventas"));
-const Caja = lazy(() => import("./features/admin/Caja"));
-const Personal = lazy(() => import("./features/admin/Personal"));
-const Horarios = lazy(() => import("./features/admin/Horarios"));
-const Finanzas = lazy(() => import("./features/admin/Finanzas"));
-const Reportes = lazy(() => import("./features/admin/Reportes"));
-const Notificaciones = lazy(() => import("./features/admin/Notificaciones"));
-const Configuracion = lazy(() => import("./features/admin/Configuracion"));
-const CartaDemoAdmin = lazy(() => import("./features/admin/CartaDemoAdmin"));
+const Landing = vista(() => import("./features/public/Landing"));
 
+const Resumen = vista(() => import("./pages/Resumen"));
+const Salon = vista(() => import("./features/op/Salon"));
+const Pos = vista(() => import("./features/op/Pos"));
+const Recepcion = vista(() => import("./features/op/Recepcion"));
+const Cola = vista(() => import("./features/kitchen/Cola"));
+const Despacho = vista(() => import("./features/kitchen/Despacho"));
+const Recetas = vista(() => import("./features/kitchen/Recetas"));
+const Productos = vista(() => import("./features/admin/Productos"));
+const Compras = vista(() => import("./features/admin/Compras"));
+const Inventario = vista(() => import("./features/admin/Inventario"));
+const Produccion = vista(() => import("./features/admin/Produccion"));
+const Ventas = vista(() => import("./features/admin/Ventas"));
+const Caja = vista(() => import("./features/admin/Caja"));
+const Personal = vista(() => import("./features/admin/Personal"));
+const Horarios = vista(() => import("./features/admin/Horarios"));
+const Finanzas = vista(() => import("./features/admin/Finanzas"));
+const Reportes = vista(() => import("./features/admin/Reportes"));
+const Notificaciones = vista(() => import("./features/admin/Notificaciones"));
+const Configuracion = vista(() => import("./features/admin/Configuracion"));
+const CartaDemoAdmin = vista(() => import("./features/admin/CartaDemoAdmin"));
+
+/** Glass skeleton shown while a route module streams in. */
 function Cargando() {
-  return <p className="p-5 text-ink-mut">Cargando módulo…</p>;
+  return (
+    <div className="space-y-4 p-4 sm:p-6" aria-busy="true">
+      <div className="h-9 w-56 animate-pulse rounded-lg bg-white/5" />
+      <div className="glass-card h-36 animate-pulse rounded-2xl" />
+      <div className="glass-card h-72 animate-pulse rounded-2xl" />
+    </div>
+  );
+}
+
+/** Last-resort boundary: a render error inside any window now shows a glass
+ *  card with the reason and a one-click recovery, never a blank screen. */
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("[mg] la ventana falló al renderizar:", error, info.componentStack);
+  }
+  render() {
+    const { error } = this.state;
+    if (error) {
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-ink-900 p-6 text-ink-txt">
+          <div className="glass-card w-full max-w-md rounded-2xl p-6 text-center">
+            <h1 className="text-lg font-semibold">La ventana falló al abrirse</h1>
+            <p className="mt-2 break-words text-sm text-ink-mut">{error.message}</p>
+            <button
+              onClick={() => location.reload()}
+              className="press mt-5 rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white shadow-sm shadow-brand-700/30 hover:bg-brand-700"
+            >
+              Recargar
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 function pagina(element: React.ReactNode, perm: string | null) {
@@ -40,8 +93,9 @@ function pagina(element: React.ReactNode, perm: string | null) {
 
 export default function App() {
   return (
-    <Suspense fallback={<Cargando />}>
-      <Routes>
+    <ErrorBoundary>
+      <Suspense fallback={<Cargando />}>
+        <Routes>
         <Route path="/login" element={<Login />} />
         {/* Public restaurant website (experience C groundwork). */}
         <Route path="/" element={<Landing />} />
@@ -110,6 +164,7 @@ export default function App() {
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </Suspense>
+      </Suspense>
+    </ErrorBoundary>
   );
 }

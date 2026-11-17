@@ -17,4 +17,18 @@ const proxy = Object.fromEntries(
 export default defineConfig({
   plugins: [react()],
   server: { port: 5173, proxy },
+  build: {
+    rollupOptions: {
+      output: {
+        // Split heavy stable libraries so route chunks stay small and browser
+        // caches survive app releases: recharts is only paid for by the
+        // windows that actually render charts (Reportes).
+        manualChunks: {
+          "react-core": ["react", "react-dom", "react-router-dom"],
+          "data": ["@tanstack/react-query"],
+          "charts": ["recharts"],
+        },
+      },
+    },
+  },
 });

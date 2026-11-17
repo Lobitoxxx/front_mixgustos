@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- DEV UTILITY (localhost only): logs in via the public API and stores the
+     session token exactly like the login form does, then redirects. Used for
+     automated smoke tests of authenticated windows. Remove before production. -->
+<html lang="es">
+<head><meta charset="utf-8"><title>dev session</title></head>
+<body>
+<script>
+  (async () => {
+    if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
+      document.body.textContent = "solo disponible en localhost";
+      return;
+    }
+    const params = new URLSearchParams(location.search);
+    const email = params.get("email") ?? "";
+    const password = params.get("password") ?? "";
+    const to = params.get("to") ?? "/";
+    try {
+      const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) throw new Error("login " + response.status);
+      const data = await response.json();
+      localStorage.setItem("mg_token", data.token);
+      location.replace(to);
+    } catch (error) {
+      document.body.textContent = "ERROR: " + error.message;
+    }
+  })();
+</script>
+</body>
+</html>
