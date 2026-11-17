@@ -59,7 +59,11 @@ export default function Despacho() {
           return (
             <Card key={stage.status} title={`${stage.title} (${items.length})`}>
               <div className="space-y-2">
-                {items.length === 0 && <p className="text-sm text-ink-mut">—</p>}
+                {items.length === 0 && (
+                  <p className="rounded-lg border border-dashed border-white/10 px-3 py-4 text-center text-xs text-ink-mut">
+                    Sin pedidos en esta etapa ✓
+                  </p>
+                )}
                 {items.map((order) => (
                   <div key={order.id} className="glass-card rounded-lg p-3">
                     <div className="flex items-center gap-2">

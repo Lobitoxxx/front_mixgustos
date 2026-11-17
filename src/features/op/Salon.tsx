@@ -107,6 +107,7 @@ export default function Salon() {
         {tables.isLoading ? <Loading /> : (
           <Table
             head={["Código", "Sillas", "Estado", "Acciones"]}
+            empty="Sin mesas en esta área — crea una arriba con su código y sillas."
             rows={visibleTables.map((table) => [
               <span key="c" className="font-semibold">{table.code}</span>,
               table.seats,

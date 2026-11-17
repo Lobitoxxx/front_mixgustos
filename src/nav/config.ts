@@ -44,12 +44,22 @@ export const NAV: Record<Experiencia, NavEntry[]> = {
   ],
 };
 
-/** Which experience a user should land on, by their permission codes. */
+/** Which experience a user should land on, by their permission codes.
+ *  Specificity beats permission count: any administrative permission sends
+ *  the session to the admin experience; otherwise kitchen gating perms, then
+ *  dining-room perms. A cajero (cash.view) lands in admin — their Caja board
+ *  lives there — and can hop to Operación with the header switcher. */
 export function experienciaInicial(permisos: string[]): Experiencia {
   const kitchenPerms = ["production.view", "dispatch.view"];
   const opPerms = ["tables.view", "sales.create", "inventory.receive"];
-  if (kitchenPerms.some((p) => permisos.includes(p)) && permisos.length <= 8) return "kitchen";
-  if (opPerms.some((p) => permisos.includes(p)) && permisos.length <= 12) return "op";
+  const adminPerms = [
+    "products.view", "purchasing.view", "inventory.view", "sales.view",
+    "cash.view", "staff.view", "schedules.view", "finance.view",
+    "reports.view", "settings.manage",
+  ];
+  const isAdmin = adminPerms.some((p) => permisos.includes(p));
+  if (!isAdmin && kitchenPerms.some((p) => permisos.includes(p))) return "kitchen";
+  if (!isAdmin && opPerms.some((p) => permisos.includes(p))) return "op";
   return "admin";
 }
 

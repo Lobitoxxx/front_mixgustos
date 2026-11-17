@@ -33,7 +33,11 @@ const GROUPS: { status: string; title: string; next?: string; nextLabel?: string
           return (
             <Card key={group.status} title={`${group.title} (${items.length})`}>
               <div className="space-y-2">
-                {items.length === 0 && <p className="text-sm text-ink-mut">—</p>}
+                {items.length === 0 && (
+                  <p className="rounded-lg border border-dashed border-white/10 px-3 py-4 text-center text-xs text-ink-mut">
+                    Nada por aquí — todo al día ✓
+                  </p>
+                )}
                 {items.map((order) => (
                   <div key={order.id} className="glass-card rounded-lg p-3">
                     <div className="flex items-center gap-2">

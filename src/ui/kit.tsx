@@ -178,9 +178,9 @@ export function Pill({ value }: { value: string }) {
   return <span className={`inline-block rounded-full border border-white/5 px-2.5 py-0.5 text-[11px] font-medium backdrop-blur-sm ${style}`}>{value}</span>;
 }
 
-export function Table({ head, rows }: { head: string[]; rows: ReactNode[][] }) {
+export function Table({ head, rows, empty }: { head: string[]; rows: ReactNode[][]; empty?: string }) {
   if (rows.length === 0) {
-    return <p className="py-6 text-center text-sm text-ink-mut">Sin registros.</p>;
+    return <p className="rounded-lg border border-dashed border-white/10 px-3 py-6 text-center text-sm text-ink-mut">{empty ?? "Sin registros por ahora."}</p>;
   }
   return (
     <div className="overflow-x-auto">

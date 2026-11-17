@@ -21,6 +21,12 @@ const EXPERIENCIA_LABEL: Record<Experiencia, string> = {
   kitchen: "Cocina",
 };
 
+const EXPERIENCIA_SHORT: Record<Experiencia, string> = {
+  admin: "Admin",
+  op: "Op",
+  kitchen: "Cocina",
+};
+
 /** Header switcher: every experience the session can open, as glass pills.
  *  Shown only when the session qualifies for more than one. */
 function ExperienciaSwitcher({ actual }: { actual: Experiencia }) {
@@ -30,21 +36,22 @@ function ExperienciaSwitcher({ actual }: { actual: Experiencia }) {
   );
   if (disponibles.length === 0) return null;
   return (
-    <div className="hidden items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1 sm:flex">
+    <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/20 p-1">
       {([actual, ...disponibles] as Experiencia[]).map((exp) => (
         <NavLink
           key={exp}
           to={`/${exp}`}
           end
           className={({ isActive }) =>
-            `press whitespace-nowrap rounded-full px-3 py-1 text-[11px] font-semibold transition-colors ${
+            `press whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors sm:px-3 ${
               isActive
                 ? "bg-brand-600 text-white shadow-sm shadow-brand-700/30"
                 : "text-ink-mut hover:text-ink-txt"
             }`
           }
         >
-          {EXPERIENCIA_LABEL[exp]}
+          <span className="sm:hidden">{EXPERIENCIA_SHORT[exp]}</span>
+          <span className="hidden sm:inline">{EXPERIENCIA_LABEL[exp]}</span>
         </NavLink>
       ))}
     </div>
